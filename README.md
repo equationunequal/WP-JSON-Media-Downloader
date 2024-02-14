@@ -8,7 +8,7 @@ WP-JSON Media Downloader is a simple Python script that downloads all media from
 python wpmedia.py
 ```
 
-Enter the URL of the WordPress site. The media directory will be created automatically if it doesn't exist.
+Enter the URL of the WordPress site when prompted. The media directory will be created automatically if it doesn't exist.
 
 ## Contributing
 
