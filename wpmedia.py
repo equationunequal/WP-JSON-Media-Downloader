@@ -18,6 +18,9 @@ if not os.path.exists('media'):
 if site_url.startswith("http://") == False and site_url.startswith("https://") == False:
     site_url = "http://" + site_url
 
+# Spoof headers, required for some sites
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
+
 print("Scanning site: " + site_url)
 
 end_reached = False
@@ -25,7 +28,7 @@ page_number = 1
 
 while end_reached == False:
     # Make a GET request to retrieve a list with all media files (maximum 100 per page)
-    wp_response = requests.get(f"{site_url}/wp-json/wp/v2/media/?per_page=100&page=" + str(page_number)).json()
+    wp_response = requests.get(f"{site_url}/wp-json/wp/v2/media/?per_page=100&page=" + str(page_number), headers=headers).json()
 
     print("Downloading files from page " + str(page_number))
 
@@ -40,7 +43,7 @@ while end_reached == False:
             media_url = media["source_url"]
             media_file_name = os.path.basename(media_url)
             media_file_path = f"media/{media_file_name}"
-            media_file = requests.get(media_url)
+            media_file = requests.get(media_url, headers=headers)
             
             # Save the media file in the media directory
             with open(media_file_path, "wb") as f:
@@ -51,3 +54,4 @@ while end_reached == False:
 # Version History
 # 2024-02-10: 1.0
 # 2024-02-11: 1.1 Add http:// if needed, create media directory if not present
+# 2024-02-27: 1.2 Add user-agent in header
